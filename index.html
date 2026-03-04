@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>kırkpınarsa</title>
+  <meta name="description" content="kırkpınarsa — seçkin konaklama ve mülk keşfi." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.86);
+      --muted: rgba(255,255,255,.62);
+      --line: rgba(255,255,255,.12);
+
+      --accentA: #8bd3ff;
+      --accentB: #a7ffce;
+      --accentC: #ffd6a5;
+
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+
+      --max: 1140px;
+      --pad: clamp(16px, 3vw, 28px);
+
+      --h1: clamp(44px, 5.6vw, 78px);
+      --h2: clamp(26px, 3vw, 40px);
+      --p:  16px;
+      --lead: clamp(16px, 1.6vw, 18px);
+
+      --tracking: .14em;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 72% 18%, rgba(139,211,255,.18), transparent 60%),
+        radial-gradient(900px 560px at 22% 34%, rgba(167,255,206,.14), transparent 58%),
+        radial-gradient(1100px 760px at 50% 110%, rgba(255,214,165,.12), transparent 60%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* ---------- Layout ---------- */
+    .container{
+      width: min(var(--max), calc(100% - (var(--pad) * 2)));
+      margin: 0 auto;
+    }
+
+    /* ---------- Sticky header refinement ---------- */
+    .header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 0;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(11,15,20,.78), rgba(11,15,20,.36));
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .header.is-scrolled{
+      border-bottom-color: var(--line);
+      background: rgba(11,15,20,.72);
+    }
+    .nav{
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+    .mark{
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background:
+        radial-gradient(12px 12px at 30% 35%, rgba(255,255,255,.28), transparent 60%),
+        linear-gradient(135deg, rgba(139,211,255,.55), rgba(167,255,206,.45), rgba(255,214,165,.35));
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .brand .name{
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+    .brand .tag{
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .menu{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    .menu a{
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: rgba(255,255,255,.72);
+      transition: color .18s ease, background .18s ease, transform .18s ease;
+      letter-spacing: .01em;
+      white-space: nowrap;
+    }
+
+    /* “dağınık şekilli” gradient accent only on some items */
+    .menu a::before{
+      content:"";
+      position:absolute;
+      inset: -8px -10px;
+      border-radius: 999px;
+      background: radial-gradient(40px 26px at 20% 10%, rgba(139,211,255,.38), transparent 60%),
+                  radial-gradient(46px 30px at 75% 75%, rgba(167,255,206,.26), transparent 62%),
+                  radial-gradient(54px 30px at 45% 120%, rgba(255,214,165,.22), transparent 62%);
+      filter: blur(6px);
+      opacity: 0;
+      transform: rotate(-6deg);
+      transition: opacity .18s ease;
+      pointer-events: none;
+    }
+    .menu a.accent::before{ opacity: .9; }
+    .menu a:hover{
+      color: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.06);
+      transform: translateY(-1px);
+    }
+    .menu a.active{
+      color: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.07);
+    }
+
+    .nav-cta{
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      min-width: 180px;
+    }
+    .btn{
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.20);
+    }
+    .btn.primary{
+      border-color: rgba(255,255,255,.16);
+      background: linear-gradient(135deg, rgba(139,211,255,.18), rgba(167,255,206,.14), rgba(255,214,165,.10));
+    }
+
+    /* ---------- Hero ---------- */
+    .hero{
+      padding: 40px 0 18px;
+    }
+    .hero-grid{
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .kicker{
+      font-size: 12px;
+      letter-spacing: var(--tracking);
+      color: rgba(255,255,255,.62);
+      text-transform: uppercase;
+    }
+    h1{
+      font-family: "Playfair Display", serif;
+      font-weight: 600;
+      font-size: var(--h1);
+      line-height: 1.02;
+      margin: 12px 0 14px;
+      letter-spacing: -0.02em;
+    }
+    .lead{
+      font-size: var(--lead);
+      color: rgba(255,255,255,.72);
+      line-height: 1.55;
+      max-width: 54ch;
+      margin: 0 0 18px;
+    }
+
+    /* Optical alignment: make CTA row optically centered under text block */
+    .hero-actions{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 2px;
+    }
+
+    .search{
+      margin-top: 18px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr .8fr auto;
+      gap: 10px;
+    }
+    .field{
+      display: grid;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      min-height: 58px;
+    }
+    .label{
+      font-size: 11px;
+      color: rgba(255,255,255,.58);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .input, select{
+      background: transparent;
+      border: 0;
+      outline: none;
+      color: rgba(255,255,255,.88);
+      font-size: 14px;
+      padding: 0;
+      appearance: none;
+    }
+    select option{ background: #0b0f14; }
+    .search .btn.primary{
+      height: 58px;
+      padding: 0 18px;
+      justify-content: center;
+    }
+
+    .hero-card{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+      min-height: 520px;
+    }
+    .hero-card .img{
+      height: 64%;
+      background:
+        radial-gradient(800px 320px at 30% 10%, rgba(255,255,255,.22), transparent 55%),
+        linear-gradient(180deg, rgba(11,15,20,.0), rgba(11,15,20,.55)),
+        url("https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+      filter: saturate(1.05);
+    }
+    .hero-card .meta{
+      padding: 16px 16px 18px;
+      display: grid;
+      gap: 12px;
+    }
+    .chips{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chip{
+      font-size: 12px;
+      color: rgba(255,255,255,.78);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+    }
+    .stat{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .stat .k{ font-size: 12px; color: rgba(255,255,255,.58); }
+    .stat .v{ font-size: 14px; color: rgba(255,255,255,.86); margin-top: 4px; }
+
+    /* ---------- Sections ---------- */
+    section{
+      padding: 32px 0;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      margin-bottom: 18px;
+    }
+    .section-head h2{
+      margin: 0;
+      font-size: var(--h2);
+      font-family: "Playfair Display", serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .section-head p{
+      margin: 0;
+      color: rgba(255,255,255,.62);
+      max-width: 62ch;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    /* Listings */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 4;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      will-change: transform;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.055);
+    }
+    .card .thumb{
+      height: 220px;
+      background: center/cover no-repeat;
+      position: relative;
+    }
+    .price{
+      position:absolute;
+      top: 12px;
+      left: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(11,15,20,.52);
+      backdrop-filter: blur(10px);
+    }
+    .badge{
+      position:absolute;
+      top: 12px;
+      right: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(11,15,20,.52);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,.80);
+    }
+    .card .body{
+      padding: 14px 14px 16px;
+      display:grid;
+      gap: 10px;
+    }
+    .title{
+      font-size: 15px;
+      color: rgba(255,255,255,.92);
+      letter-spacing: .01em;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .sub{
+      font-size: 13px;
+      color: rgba(255,255,255,.60);
+      line-height: 1.45;
+      max-width: 58ch;
+    }
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .pill{
+      font-size: 12px;
+      color: rgba(255,255,255,.74);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    /* Why */
+    .why{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    .why .box{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 18px;
+      display:grid;
+      gap: 10px;
+    }
+    .icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.22), transparent 60%),
+        linear-gradient(135deg, rgba(139,211,255,.22), rgba(167,255,206,.14), rgba(255,214,165,.10));
+    }
+    .box h3{
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+    .box p{
+      margin: 0;
+      color: rgba(255,255,255,.60);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+
+    /* Editorial block */
+    .editorial{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .quote{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 22px;
+      display:grid;
+      gap: 12px;
+    }
+    .quote .big{
+      font-family: "Playfair Display", serif;
+      font-size: clamp(20px, 2.2vw, 30px);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .quote .by{
+      color: rgba(255,255,255,.60);
+      font-size: 13px;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: rgba(255,255,255,.38);
+    }
+
+    .photo{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        linear-gradient(180deg, rgba(11,15,20,.0), rgba(11,15,20,.55)),
+        url("https://images.unsplash.com/photo-1502005097973-6a7082348e28?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+      box-shadow: var(--shadow);
+      min-height: 280px;
+      position: relative;
+      overflow:hidden;
+    }
+    .photo .cap{
+      position:absolute;
+      left: 16px;
+      bottom: 14px;
+      right: 16px;
+      display:flex;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .cap .t{
+      display:grid;
+      gap: 6px;
+    }
+    .cap .t strong{
+      font-size: 14px;
+      letter-spacing: .01em;
+    }
+    .cap .t span{
+      font-size: 12px;
+      color: rgba(255,255,255,.62);
+    }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 40px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.60);
+      font-size: 13px;
+    }
+    .foot{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .links{
+      display:flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,.62);
+    }
+    .links a:hover{ color: rgba(255,255,255,.86); }
+
+    /* Loading fade */
+    .page{
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .42s ease, transform .42s ease;
+    }
+    .page.ready{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px){
+      .nav{ grid-template-columns: 1fr auto; }
+      .nav-cta{ display:none; }
+      .hero-grid{ grid-template-columns: 1fr; }
+      .hero-card{ min-height: 440px; }
+      .search{ grid-template-columns: 1fr 1fr; }
+      .search .btn.primary{ grid-column: span 2; }
+      .card{ grid-column: span 6; }
+      .why{ grid-template-columns: 1fr; }
+      .editorial{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px){
+      .brand{ min-width: unset; }
+      .menu{ display:none; }
+      .nav{ grid-template-columns: 1fr auto; }
+      .btn{ height: 38px; }
+      .search{ grid-template-columns: 1fr; }
+      .search .btn.primary{ grid-column: auto; }
+      .card{ grid-column: span 12; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page" id="page">
+    <header class="header" id="header">
+      <div class="container">
+        <div class="nav">
+          <a class="brand" href="#top" aria-label="kırkpınarsa home">
+            <span class="mark" aria-hidden="true"></span>
+            <span>
+              <span class="name">kırkpınarsa</span>
+              <span class="tag">curated stays & estates</span>
+            </span>
+          </a>
+
+          <nav class="menu" aria-label="Primary">
+            <a class="accent active" href="#discover">Keşfet</a>
+            <a href="#listings">İlanlar</a>
+            <a class="accent" href="#why">Neden</a>
+            <a href="#journal">Journal</a>
+            <a class="accent" href="#contact">İletişim</a>
+          </nav>
+
+          <div class="nav-cta">
+            <button class="btn" type="button">Giriş</button>
+            <button class="btn primary" type="button">Get started</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <div class="container">
+        <section class="hero" id="discover">
+          <div class="hero-grid">
+            <div>
+              <div class="kicker">LIVE PREVIEW</div>
+              <h1>kırkpınarsa</h1>
+              <p class="lead">
+                Seçkin konaklama ve mülk koleksiyonları. Sade arayüz, güçlü görseller,
+                hızlı keşif: şehir kaçamağı, hafta sonu evi, yatırım ya da “sadece güzel” bir yer.
+              </p>
+
+              <div class="hero-actions">
+                <a class="btn primary" href="#listings">İlanları Gör</a>
+                <a class="btn" href="#journal">Editör Seçkisi</a>
+              </div>
+
+              <form class="search" onsubmit="return false" aria-label="Search">
+                <div class="field">
+                  <div class="label">Lokasyon</div>
+                  <input class="input" placeholder="Sapanca, Cunda, Bodrum…" />
+                </div>
+                <div class="field">
+                  <div class="label">Tip</div>
+                  <select class="input">
+                    <option>Villa</option>
+                    <option>Dağ evi</option>
+                    <option>Şehir evi</option>
+                    <option>Butik otel</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <div class="label">Bütçe</div>
+                  <select class="input">
+                    <option>₺ — Esnek</option>
+                    <option>₺₺ — Orta</option>
+                    <option>₺₺₺ — Premium</option>
+                    <option>₺₺₺₺ — Ultra</option>
+                  </select>
+                </div>
+                <button class="btn primary" type="submit">Ara</button>
+              </form>
+            </div>
+
+            <aside class="hero-card" aria-label="Featured listing">
+              <div class="img" role="img" aria-label="Modern villa"></div>
+              <div class="meta">
+                <div class="chips">
+                  <span class="chip">1 Bedroom • 2 Guest</span>
+                  <span class="chip">Minimal • Quiet</span>
+                  <span class="chip">24h concierge</span>
+                </div>
+                <div class="stat">
+                  <div>
+                    <div class="k">Öne çıkan</div>
+                    <div class="v">Zen Villas</div>
+                  </div>
+                  <div>
+                    <div class="k">Gecelik</div>
+                    <div class="v">₺5.250</div>
+                  </div>
+                  <div>
+                    <div class="k">Bölge</div>
+                    <div class="v">Sapanca</div>
+                  </div>
+                  <div>
+                    <div class="k">Stil</div>
+                    <div class="v">Modernist</div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="listings">
+          <div class="section-head">
+            <div>
+              <h2>Seçili ilanlar</h2>
+              <p>
+                Kırkpınarsa; “az ama iyi” mantığıyla kürate edilir. Görsel ağırlıklı,
+                okunabilir ve hızlı karşılaştırmalı bir akış.
+              </p>
+            </div>
+            <a class="btn" href="#contact">Talep oluştur</a>
+          </div>
+
+          <div class="grid">
+            <article class="card">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80')">
+                <div class="price">₺4.100 / gece</div>
+                <div class="badge">Yeni</div>
+              </div>
+              <div class="body">
+                <div class="title">
+                  <span>Kıyı Evi — Quiet Bay</span>
+                  <span style="opacity:.7">↗</span>
+                </div>
+                <div class="sub">Geniş camlar, yumuşak ışık, minimalist iç mekân.</div>
+                <div class="row">
+                  <span class="pill">2+1</span><span class="pill">Deniz</span><span class="pill">Sessiz</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1400&q=80')">
+                <div class="price">₺6.800 / gece</div>
+                <div class="badge">Top pick</div>
+              </div>
+              <div class="body">
+                <div class="title">
+                  <span>Stone House — Orchard</span>
+                  <span style="opacity:.7">↗</span>
+                </div>
+                <div class="sub">Taş dokular, şömine, sakin bahçe ritmi.</div>
+                <div class="row">
+                  <span class="pill">3+1</span><span class="pill">Şömine</span><span class="pill">Bahçe</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1400&q=80')">
+                <div class="price">₺9.900 / gece</div>
+                <div class="badge">Limited</div>
+              </div>
+              <div class="body">
+                <div class="title">
+                  <span>Hill Villa — Golden Hour</span>
+                  <span style="opacity:.7">↗</span>
+                </div>
+                <div class="sub">Manzara + modern form. Gün batımı için tasarlandı.</div>
+                <div class="row">
+                  <span class="pill">4+1</span><span class="pill">Havuz</span><span class="pill">Manzara</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="why">
+          <div class="section-head">
+            <div>
+              <h2>Neden kırkpınarsa</h2>
+              <p>“Booking sitesi” değil; editöryel bir seçki hissi. Az metin, net hiyerarşi, premium tempo.</p>
+            </div>
+          </div>
+
+          <div class="why">
+            <div class="box">
+              <div class="icon" aria-hidden="true"></div>
+              <h3>Diverse & unique stays</h3>
+              <p>Her ilan: kendi tarzı ve “neden burada kalınır?” cevabıyla gelir.</p>
+            </div>
+            <div class="box">
+              <div class="icon" aria-hidden="true"></div>
+              <h3>Seamless booking flow</h3>
+              <p>Formlar minimal. Kullanıcı bir ekrana boğulmaz; karar akışı korunur.</p>
+            </div>
+            <div class="box">
+              <div class="icon" aria-hidden="true"></div>
+              <h3>Editorial curation</h3>
+              <p>Kaliteyi artıran şey filtre değil; seçki. “Az ama isabetli.”</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="journal">
+          <div class="section-head">
+            <div>
+              <h2>Journal</h2>
+              <p>İlham veren rotalar, mimari notlar, iyi yaşam ritüelleri. Kısa, net ve görsel ağırlıklı.</p>
+            </div>
+            <a class="btn" href="#contact">Bültene katıl</a>
+          </div>
+
+          <div class="editorial">
+            <div class="quote">
+              <p class="big">“Gerçek lüks, az şeye sahip olmak değil; doğru şeyleri seçmektir.”</p>
+              <div class="by"><span class="dot"></span> kırkpınarsa editör notu</div>
+            </div>
+            <div class="photo" role="img" aria-label="Editorial photo">
+              <div class="cap">
+                <div class="t">
+                  <strong>Creating unforgettable stays</strong>
+                  <span>Since 2021 • curated for calm</span>
+                </div>
+                <span class="pill">Read ↗</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div class="section-head">
+            <div>
+              <h2>İletişim</h2>
+              <p>Bir yer mi arıyorsun, yoksa portföyünü mü eklemek istiyorsun? Kısa yaz, biz döneriz.</p>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card" style="grid-column: span 7;">
+              <div class="body" style="gap:12px;">
+                <div class="title"><span>Talep formu</span><span style="opacity:.7">↗</span></div>
+                <div class="sub">Hangi bölge, hangi dönem, kaç kişi? 30 saniyede.</div>
+
+                <div class="search" style="grid-template-columns: 1fr 1fr; margin-top: 0;">
+                  <div class="field">
+                    <div class="label">Ad Soyad</div>
+                    <input class="input" placeholder="Hazar Üstün" />
+                  </div>
+                  <div class="field">
+                    <div class="label">E-posta</div>
+                    <input class="input" placeholder="mail@ornek.com" />
+                  </div>
+                  <div class="field" style="grid-column: span 2;">
+                    <div class="label">Mesaj</div>
+                    <input class="input" placeholder="Sapanca’da 2 gecelik, sakin bir villa arıyorum…" />
+                  </div>
+                  <button class="btn primary" type="button" style="grid-column: span 2;">Gönder</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="grid-column: span 5;">
+              <div class="body">
+                <div class="title"><span>Ofis</span><span style="opacity:.7">↗</span></div>
+                <div class="sub">İstanbul • İzmit • Remote</div>
+                <div class="row">
+                  <span class="pill">hello@kirpinarsa.com</span>
+                  <span class="pill">+90 (___) ___ __ __</span>
+                  <span class="pill">Instagram</span>
+                </div>
+                <div class="sub" style="margin-top:6px;">
+                  Not: Bu demo içeriktir. Metinleri ve görselleri gerçek verinle kolayca değiştiririz.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer>
+          <div class="container">
+            <div class="foot">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span class="mark" aria-hidden="true" style="width:26px;height:26px;border-radius:10px;"></span>
+                <span>© <span id="y"></span> kırkpınarsa</span>
+              </div>
+              <div class="links">
+                <a href="#discover">Keşfet</a>
+                <a href="#listings">İlanlar</a>
+                <a href="#journal">Journal</a>
+                <a href="#contact">İletişim</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Loading fade
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("page").classList.add("ready");
+      document.getElementById("y").textContent = new Date().getFullYear();
+    });
+
+    // Sticky header refinement: add border when scrolling
+    const header = document.getElementById("header");
+    const onScroll = () => {
+      if (window.scrollY > 6) header.classList.add("is-scrolled");
+      else header.classList.remove("is-scrolled");
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>
